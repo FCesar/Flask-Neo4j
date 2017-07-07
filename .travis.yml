@@ -19,7 +19,6 @@ before_install:
   - wget dist.neo4j.org/neo4j-community-$NEO4J_VERSION-unix.tar.gz
   - tar -xzf neo4j-community-$NEO4J_VERSION-unix.tar.gz
   - neo4j-community-$NEO4J_VERSION/bin/neo4j console
-  - sleep 15s
 # command to install dependencies
 install: "pip install -r requirements.txt"
 # command to run tests
