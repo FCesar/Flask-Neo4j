@@ -1,0 +1,31 @@
+language: python
+python:
+  - "2.6"
+  - "2.7"
+  - "3.2"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.5-dev" # 3.5 development branch
+  - "3.6"
+  - "3.6-dev" # 3.6 development branch
+  - "3.7-dev" # 3.7 development branch
+  - "nightly" # currently points to 3.7-dev
+jdk:
+    - oraclejdk8  # needed for local Neo4j 2.0+
+
+env:
+    # test across multiple versions of Neo4j:
+    - NEO4J_VERSION="3.2.1"
+    
+
+before_install:
+    # install Neo4j locally:
+    - wget dist.neo4j.org/neo4j-community-$NEO4J_VERSION-unix.tar.gz
+    - tar -xzf neo4j-community-$NEO4J_VERSION-unix.tar.gz
+    - neo4j-community-$NEO4J_VERSION/bin/neo4j start
+
+# command to install dependencies
+install: "pip install -r requirements.txt"
+# command to run tests
+script: python FlaskNeo4j/test.py
