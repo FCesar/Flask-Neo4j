@@ -19,7 +19,7 @@ class TestFlaskNeo4j(unittest.TestCase):
 	def setUp(self):
 		app = Flask(__name__)
 
-		neo4j = Neo4j(app=app,host="http://localhost:7474/db/data/",user="neo4j",password="neo4jneo4j")
+		neo4j = Neo4j(app=app,host="bolt://localhost:7687/",user="neo4j",password="neo4jneo4j")
 
 		@app.route('/',methods=['GET'])
 		def get():
