@@ -1,5 +1,6 @@
 language: python
 sudo: true
+
 python:
   - "3.6"
   - "3.7-dev" # 3.7 development branch
