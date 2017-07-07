@@ -1,24 +1,24 @@
 language: python
-sudo: true
-
 python:
   - "3.6"
   - "3.7-dev" # 3.7 development branch
   - "nightly" # currently points to 3.7-dev
 jdk:
   - oraclejdk8  # needed for local Neo4j 2.0+
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
 env:
   # test across multiple versions of Neo4j:
   - NEO4J_VERSION="3.2.1"
 before_install:
-  - sudo apt-get install python-software-properties
-  - sudo apt-add-repository ppa:webupd8team/java
-  # install Oracle JDK8
-  - sudo apt-get install oracle-java8-installer
+  - export JAVA_HOME="/usr/lib/jvm/java-8-oracle"; export PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin"; export java_path="/usr/lib/jvm/java-8-oracle/jre/bin/java"
+  - java -version
   # install Neo4j locally:
   - wget dist.neo4j.org/neo4j-community-$NEO4J_VERSION-unix.tar.gz
   - tar -xzf neo4j-community-$NEO4J_VERSION-unix.tar.gz
-  - neo4j-community-$NEO4J_VERSION/bin/neo4j console
+  - neo4j-community-$NEO4J_VERSION/bin/neo4j start
 # command to install dependencies
 install: "pip install -r requirements.txt"
 # command to run tests
