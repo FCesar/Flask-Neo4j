@@ -1,5 +1,4 @@
 language: python
-sudo: true
 python:
   - "3.6"
   - "3.7-dev" # 3.7 development branch
@@ -19,7 +18,7 @@ before_install:
   # install Neo4j locally:
   - wget dist.neo4j.org/neo4j-community-$NEO4J_VERSION-unix.tar.gz
   - tar -xzf neo4j-community-$NEO4J_VERSION-unix.tar.gz
-  - sudo neo4j-community-$NEO4J_VERSION/bin/neo4j console
+  - sudo neo4j-community-$NEO4J_VERSION/bin/neo4j console &
   - sleep 10s
 # command to install dependencies
 install: "pip install -r requirements.txt"
