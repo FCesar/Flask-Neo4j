@@ -11,7 +11,7 @@ except ImportError:
 
 class Neo4j(object):
 
-	def __init__(self,app:Flask,host:str,user:str,password:str) -> None:
+	def __init__(self,host:str,user:str,password:str,app:Flask=None) -> None:
 		self._host:str = host
 		self._user:str = user
 		self._password:str = password
@@ -20,20 +20,24 @@ class Neo4j(object):
 		self._driver = None
 		self._transaction:Transaction = None
 
+		if self._driver is None:
+			self.__connect()
+
+		if app is not None:
+			self.init_app(app)
+
+	def init_app(self,app):
 		self.app = app
 
-		self.app.before_request(self.open)
+		self.app.before_request_funcs.setdefault(None, []).append(self.open)
 
-		self.app.after_request(self.close)
+		self.app.after_request_funcs.setdefault(None, []).append(self.close)
 
 		if hasattr(self.app, 'teardown_appcontext'):
-		    self.app.teardown_appcontext(self.error)
+			self.app.teardown_appcontext_funcs.append(self.error)
 		else:
-		    self.app.teardown_request(self.error)
+			self.app.teardown_request_funcs.append(self.error)
 
-		
-
-		
 	def transaction(self):
 		if self._session is None:
 			self.open()
@@ -45,9 +49,6 @@ class Neo4j(object):
 		return self._transaction
 
 	def open(self):
-		if self._driver is None:
-			self.__connect()
-
 		self._session = self.driver.session()
 		# print("Open Session")
 		self.transaction()
@@ -74,5 +75,6 @@ class Neo4j(object):
 			# print("Close Session")
 
 	def __connect(self):
+		# print("Open Connection")
 		self.driver = GraphDatabase.driver(self._host, auth=basic_auth(self._user,self._password))
 		
