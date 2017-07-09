@@ -3,10 +3,9 @@ from flask.views import View,MethodView
 from flask_injector import FlaskInjector
 from injector import inject,Module,provider,singleton,Injector
 from neo4j.v1 import GraphDatabase, basic_auth, Session, Transaction
-from Neo4j import Neo4j
-from neo4j.v1 import Transaction
-from Dao import Dao
-from Node import Node
+from flask_neo4j import Neo4j
+from dao import Dao
+from node import Node
 import json
 
 class Test(Node):
