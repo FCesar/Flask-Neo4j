@@ -52,11 +52,14 @@ class Neo4j(object):
 		for e in self.app.error_handler_spec:
 			for f in self.app.error_handler_spec[e]:
 				self.handler[f] = self.app.error_handler_spec[e][f][default_exceptions[f]]
-				self.app.register_error_handler(f,self.__error)
+				self.app.error_handler_spec[e][f][default_exceptions[f]] = self.__error
 
 		for e in default_exceptions:
 			if e not in self.app.error_handler_spec[None]:
-				self.app.register_error_handler(e,self.__error)
+				exc_class, code = self.app._get_exc_class_and_code(e)
+
+				handlers = self.app.error_handler_spec.setdefault(None, {}).setdefault(code, {})
+				handlers[exc_class] = self.__error
 
 		self.app.before_request_funcs.setdefault(None, []).append(self.open)
 
