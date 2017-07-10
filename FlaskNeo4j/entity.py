@@ -6,15 +6,11 @@ class MyEncoder(json.JSONEncoder):
 
 class Entity(object):
 
-	__json = "{}"
-
 	id = 0
 
 	def __init__(self, obj:dict):
 		self.__dict__ = obj
 
-		self.__json = self.__s()
-	
 	@classmethod
 	def name(cls):
 		return cls.__name__
@@ -23,7 +19,6 @@ class Entity(object):
 		return json.dumps(self.__dict__,cls=MyEncoder)
 
 	def json(self):
-		self.__json = self.__s()
-		return self.__json;
+		return self.__s();
 
 	

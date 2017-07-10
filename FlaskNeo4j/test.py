@@ -36,14 +36,19 @@ class TestFlaskNeo4j(unittest.TestCase):
 		self.assertIn('application/json', self.response.content_type)
 
 	def test_e(self):
+		self.response = self.app.get('/count')
+		self.assertEqual(int(self.response.data), 1)
+		self.assertTrue(isinstance(int(self.response.data), int))
+		self.assertIn('application/json', self.response.content_type)
+
+	def test_f(self):
 		self.response = self.app.delete('/1')
 		self.assertEqual(200, self.response.status_code)
 		self.assertIn('application/json', self.response.content_type)
 
-	def test_f(self):
-		self.response = self.app.get('/count')
-		self.assertEqual(int(self.response.data), 0)
-		self.assertTrue(isinstance(int(self.response.data), int))
+	def test_g(self):
+		self.response = self.app.get('/1')
+		self.assertEqual(404, self.response.status_code)
 		self.assertIn('application/json', self.response.content_type)
 
 if __name__ == '__main__':

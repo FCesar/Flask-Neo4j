@@ -1,6 +1,6 @@
 from flask import Flask, Config,jsonify
 from flask.views import View,MethodView
-from flask_injector import FlaskInjector
+from flask_injector import FlaskInjector,request
 from injector import inject,Module,provider,singleton,Injector
 from neo4j.v1 import GraphDatabase, basic_auth, Session, Transaction
 from flask_neo4j import Neo4j
@@ -30,6 +30,12 @@ class Neo4jModule(Module):
 	def provide_ext(self, app: Flask) -> Neo4j:
 		return Neo4j(app=app,host="bolt://localhost:7687/",user="neo4j",password="neo4jneo4j")
 
+class Neo4jTransactionModule(Module):
+	@provider
+	@request
+	def provide_ext(self, neo4j: Neo4j) -> Transaction:
+		return neo4j.transaction()
+
 # Class-based view with injected constructor
 class TesteView(MethodView):
 	@inject
@@ -38,15 +44,12 @@ class TesteView(MethodView):
 
 	def get(self):
 		dao:Dao = TestDao(self.t)
+
 		r = dao.find()
-		list = [ob.__dict__ for ob in r]
+		
+		list = [ob.json() for ob in r]
 
 		return jsonify(list), 200
-
-class Neo4jTransactionModule(Module):
-	@provider
-	def provide_ext(self, neo4j: Neo4j) -> Transaction:
-		return neo4j.transaction()
 
 if __name__ == '__main__':
 	app = Flask(__name__)
@@ -58,11 +61,11 @@ if __name__ == '__main__':
 
 		r = dao.find()
 		
-		list = [ob.__dict__ for ob in r]
+		list = [ob.json() for ob in r]
 
 		return jsonify(list), 200
 
-	app.add_url_rule('/TesteView', view_func=TesteView.as_view('TesteView'),methods=['GET'])
+	app.add_url_rule('/TestView', view_func=TesteView.as_view('TesteView'),methods=['GET'])
 
 	FlaskInjector(app=app, modules=[Neo4jModule,Neo4jTransactionModule])
 

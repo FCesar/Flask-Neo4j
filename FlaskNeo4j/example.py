@@ -1,5 +1,5 @@
 import json
-from flask import Flask,jsonify,make_response,request
+from flask import Flask,jsonify,make_response,request, abort
 from neo4j.v1 import Transaction
 from flask_neo4j import Neo4j
 from dao import Dao
@@ -14,6 +14,9 @@ class TestDao(Dao):
 		self.node = Test
 
 app = Flask(__name__)
+app.debug = False
+
+
 
 neo4j = Neo4j(app=app,host="bolt://localhost:7687/",user="neo4j",password="neo4jneo4j")
 
@@ -34,7 +37,7 @@ def getId(id:int=None):
 	r = dao.find(id)
 
 	if len(r) == 0:
-		return jsonify(r), 200
+		abort(404)
 	else:
 		return jsonify(r[0].json()), 200
 	
@@ -74,6 +77,12 @@ def count():
 	r = dao.count()
 
 	return jsonify(r), 200
+
+@app.errorhandler(404)
+@app.errorhandler(500)
+@app.errorhandler(505)
+def not_foundddd(error):
+    return jsonify(message=str(error)), error.code
 
 if __name__ == '__main__':
 	app.run()
