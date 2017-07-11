@@ -1,7 +1,7 @@
 from neo4j.v1 import Transaction
 
-from node import Node
-from edge import Edge
+from .node import Node
+from .edge import Edge
 
 class Dao(object):
 	node:Node = None

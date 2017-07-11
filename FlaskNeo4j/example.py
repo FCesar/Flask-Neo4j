@@ -1,9 +1,9 @@
 import json
 from flask import Flask,jsonify,make_response,request, abort
 from neo4j.v1 import Transaction
-from flask_neo4j import Neo4j
-from dao import Dao
-from node import Node
+from .flask_neo4j import Neo4j
+from .dao import Dao
+from .node import Node
 
 class Test(Node):
 	name = ""
