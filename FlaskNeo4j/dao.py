@@ -31,12 +31,11 @@ class Dao(object):
 	def __convert(self,node:Node, insert = True):
 		list = []
 
-		for k in node.__dict__:
-			if k != "_Entity__json":
-				if insert :
-					list.append("%s:'%s'" % (k ,node.__dict__[k]))
-				else:
-					list.append("n.%s='%s'" % (k,node.__dict__[k]))
+		for key,value in node.__dict__.items():
+			if insert :
+				list.append("%s:'%s'" % (key ,value))
+			else:
+				list.append("n.%s='%s'" % (key, value))
 		
 		return ",".join(list)
 
@@ -54,12 +53,10 @@ class Dao(object):
 		return result
 
 
-	def find(self, id:str = None, where = "1=1"):
-		condition = "n.id = '%s'" % (str(id)) if id != None else where
-
+	def find(self, node:Node = None, where = "1=1"):
 		result = []
 		
-		query = "MATCH (n:"+self.__nodeName()+") WHERE "+condition+" RETURN n"
+		query = "MATCH (n:%s {%s}) WHERE %s RETURN n" % (node.typeName(),self.__convert(node),where)
 
 		for r in self.__query(query):
 			if not r is None:

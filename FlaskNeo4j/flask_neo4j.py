@@ -80,7 +80,7 @@ class Neo4j(object):
 
 		if not self._session.has_transaction():
 			self._transaction = self._session.begin_transaction()
-			# print("Open Transaction")
+			print("Open Transaction")
 
 		return self._transaction
 
@@ -88,7 +88,7 @@ class Neo4j(object):
 		"""
 		Method open.
 		"""
-		self._session = self.driver.session()
+		self._session = self._driver.session()
 		# print("Open Session")
 		self.transaction()
 
@@ -131,6 +131,6 @@ class Neo4j(object):
 		"""
 		Method __connect.
 		"""
-		# print("Open Connection")
-		self.driver = GraphDatabase.driver(self._host, auth=basic_auth(self._user,self._password))
+		print("Open Connection")
+		self._driver = GraphDatabase.driver(self._host, auth=basic_auth(self._user,self._password))
 		

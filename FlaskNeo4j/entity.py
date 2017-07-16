@@ -12,7 +12,7 @@ class Entity(object):
 		self.__dict__ = obj
 
 	@classmethod
-	def name(cls):
+	def typeName(cls):
 		return cls.__name__
 
 	def __s(self):
