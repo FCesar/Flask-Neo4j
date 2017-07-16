@@ -2,10 +2,10 @@ import unittest
 import json
 from flask import Flask,jsonify,make_response,request
 from neo4j.v1 import Transaction
-from .flask_neo4j import Neo4j
-from .dao import Dao
-from .node import Node
-from .example import app, TestDao, Test
+from FlaskNeo4j.flask_neo4j import Neo4j
+from FlaskNeo4j.dao import Dao
+from FlaskNeo4j.node import Node
+from example import app, TestDao, Test
 
 class TestFlaskNeo4j(unittest.TestCase):
 	def setUp(self):

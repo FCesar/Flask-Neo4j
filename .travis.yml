@@ -25,5 +25,5 @@ before_install:
 install: "pip install -r requirements.txt"
 # command to run tests
 script: 
-  - python -m FlaskNeo4j.test
+  - python test.py
   
