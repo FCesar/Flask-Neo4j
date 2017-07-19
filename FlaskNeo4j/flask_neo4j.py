@@ -80,7 +80,7 @@ class FlaskNeo4j(object):
 
 		if not self._session.has_transaction():
 			self._transaction = self._session.begin_transaction()
-			print("Open Transaction")
+			# print("Open Transaction")
 
 		return self._transaction
 
@@ -131,6 +131,6 @@ class FlaskNeo4j(object):
 		"""
 		Method __connect.
 		"""
-		print("Open Connection")
+		# print("Open Connection")
 		self._driver = GraphDatabase.driver(self._host, auth=basic_auth(self._user,self._password))
 		

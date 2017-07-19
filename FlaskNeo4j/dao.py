@@ -16,7 +16,6 @@ class Dao(object):
 			return None
 
 		r = []
-		print(cypher_query)
 		for record in self.transaction.run(cypher_query):
 			r.append(record)
 
