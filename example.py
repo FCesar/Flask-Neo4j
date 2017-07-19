@@ -1,7 +1,7 @@
 import json
 from flask import Flask,jsonify,make_response,request, abort
 from neo4j.v1 import Transaction
-from FlaskNeo4j.flask_neo4j import Neo4j
+from FlaskNeo4j.flask_neo4j import FlaskNeo4j
 from FlaskNeo4j.dao import Dao
 from FlaskNeo4j.node import Node
 
@@ -18,7 +18,7 @@ app.debug = False
 
 
 
-neo4j = Neo4j(app=app,host="bolt://localhost:7687/",user="neo4j",password="neo4jneo4j")
+neo4j = FlaskNeo4j(app=app,host="bolt://localhost:7687/",user="neo4j",password="neo4jneo4j")
 
 @app.route('/',methods=['GET'])
 def get():
@@ -34,7 +34,9 @@ def get():
 def getId(id:int=None):
 	dao:Dao = TestDao(neo4j.transaction())
 
-	r = dao.find(id)
+	t:Test = Test({"id":str(id)})
+
+	r = dao.find(t)
 
 	if len(r) == 0:
 		abort(404)
@@ -81,7 +83,7 @@ def count():
 @app.errorhandler(404)
 @app.errorhandler(500)
 @app.errorhandler(505)
-def not_foundddd(error):
+def not_found(error):
     return jsonify(message=str(error)), error.code
 
 if __name__ == '__main__':

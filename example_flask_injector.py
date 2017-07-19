@@ -3,7 +3,7 @@ from flask.views import View,MethodView
 from flask_injector import FlaskInjector,request
 from injector import inject,Module,provider,singleton,Injector
 from neo4j.v1 import GraphDatabase, basic_auth, Session, Transaction
-from FlaskNeo4j.flask_neo4j import Neo4j
+from FlaskNeo4j.flask_neo4j import FlaskNeo4j
 from FlaskNeo4j.dao import Dao
 from FlaskNeo4j.node import Node
 import json
@@ -27,13 +27,13 @@ class TestDao(Dao):
 class Neo4jModule(Module):
 	@provider
 	@singleton
-	def provide_ext(self, app: Flask) -> Neo4j:
-		return Neo4j(app=app,host="bolt://localhost:7687/",user="neo4j",password="neo4jneo4j")
+	def provide_ext(self, app: Flask) -> FlaskNeo4j:
+		return FlaskNeo4j(app=app,host="bolt://localhost:7687/",user="neo4j",password="neo4jneo4j")
 
 class Neo4jTransactionModule(Module):
 	@provider
 	@request
-	def provide_ext(self, neo4j: Neo4j) -> Transaction:
+	def provide_ext(self, neo4j: FlaskNeo4j) -> Transaction:
 		return neo4j.transaction()
 
 # Class-based view with injected constructor

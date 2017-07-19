@@ -2,7 +2,7 @@ import unittest
 import json
 from flask import Flask,jsonify,make_response,request
 from neo4j.v1 import Transaction
-from .flask_neo4j import Neo4j
+from .flask_neo4j import FlaskNeo4j
 from .dao import Dao
 from .node import Node
 
@@ -21,7 +21,7 @@ class TestDao(Dao):
 
 class TestFlaskNeo4j(unittest.TestCase):
 	def setUp(self):
-		self.neo4j = Neo4j(host="bolt://localhost:7687/",user="neo4j",password="neo4jneo4j")
+		self.neo4j = FlaskNeo4j(host="bolt://localhost:7687/",user="neo4j",password="neo4jneo4j")
 		self.dao = TestDao(self.neo4j.transaction())
 
 	def tearDown(self):

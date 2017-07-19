@@ -17,7 +17,7 @@ try:
 except ImportError:
     from flask import _request_ctx_stack as stack
 
-class Neo4j(object):
+class FlaskNeo4j(object):
 	"""
 	Neo4j.
 

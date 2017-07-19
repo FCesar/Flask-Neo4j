@@ -16,6 +16,7 @@ class Dao(object):
 			return None
 
 		r = []
+		print(cypher_query)
 		for record in self.transaction.run(cypher_query):
 			r.append(record)
 
@@ -30,6 +31,9 @@ class Dao(object):
 
 	def __convert(self,node:Node, insert = True):
 		list = []
+
+		if node is None:
+			return ""
 
 		for key,value in node.__dict__.items():
 			if insert :
@@ -56,7 +60,7 @@ class Dao(object):
 	def find(self, node:Node = None, where = "1=1"):
 		result = []
 		
-		query = "MATCH (n:%s {%s}) WHERE %s RETURN n" % (node.typeName(),self.__convert(node),where)
+		query = "MATCH (n:%s {%s}) WHERE %s RETURN n" % (self.__nodeName(),self.__convert(node),where)
 
 		for r in self.__query(query):
 			if not r is None:
