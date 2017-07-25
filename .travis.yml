@@ -19,8 +19,7 @@ before_install:
   - wget dist.neo4j.org/neo4j-community-$NEO4J_VERSION-unix.tar.gz
   - tar -xzf neo4j-community-$NEO4J_VERSION-unix.tar.gz
   - sudo neo4j-community-$NEO4J_VERSION/bin/neo4j console &
-  - sleep 10s
-  - curl -vX POST http://neo4j:neo4j@localhost:7474/user/neo4j/password -d"password=neo4jneo4j"
+  - sudo neo4j-community-$NEO4J_VERSION/bin/neo4j-admin set-initial-password neo4jneo4j
 # command to install dependencies
 install: "pip install -r requirements.txt"
 # command to run tests
